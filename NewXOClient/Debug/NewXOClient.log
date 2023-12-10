@@ -1,0 +1,4 @@
+﻿  NewXOClient.cpp
+C:\Users\vitya\source\repos\NewXOClient\NewXOClient.cpp(25,32): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\vitya\source\repos\NewXOClient\NewXOClient.cpp(59,31): warning C4018: <: несоответствие типов со знаком и без знака
+  NewXOClient.vcxproj -> C:\Users\vitya\source\repos\NewXOClient\Debug\NewXOClient.exe

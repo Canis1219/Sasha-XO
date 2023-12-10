@@ -1,0 +1,8 @@
+[Sun Dec 10 16:27:46 2023
+ qwe success connected to the server!
+[Sun Dec 10 16:27:46 2023
+ qwe waiting other player!
+[Sun Dec 10 16:27:53 2023
+ abc success connected to the server!
+[Sun Dec 10 16:27:53 2023
+ First move is qwe
