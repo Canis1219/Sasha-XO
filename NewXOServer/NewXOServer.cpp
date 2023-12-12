@@ -347,9 +347,14 @@ int main() {
 
     }
 
-    for (auto it = clients.begin(); it != clients.end(); ++it) {
-        std::thread clientThread(clientHandler, it->first);
-        clientThread.detach();
-    }
+    //for (auto it = clients.begin(); it != clients.end(); ++it) {
+    //    std::thread clientThread(clientHandler, it->first);
+    //    clientThread.detach();
+    //}
+	std::thread FThread(clientHandler, FConnection);
+    std::thread SThread(clientHandler, SConnection);
+    FThread.join();
+    SThread.join();
+	
     return 0;
 }
