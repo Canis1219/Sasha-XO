@@ -20,11 +20,17 @@
 #include <map>
 #include <stdio.h>
 #include <vector>
+#include <unordered_map>
 
 int time_for_move = 1000000; //Время на ход
 int port; //Порт
 bool gamer = true; //Состояние текущего хода
 bool move; //Состояние хода определенного игрока
+std::ifstream config("config.txt");
+std::string line;
+unsigned int move_time;
+std::string username;
+std::string password;
 std::ofstream llog("log_clients.txt", std::ios::app); //Файл с логами
 
 //Игровое поле

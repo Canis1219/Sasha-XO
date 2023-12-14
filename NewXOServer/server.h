@@ -21,7 +21,11 @@ int count_of_move = 0;  //Количество ходов
 int port = 0; 
 struct sockaddr_in address; 
 int addrlen = sizeof(address);
-std::ofstream llog("log_server.txt"); //Файл с логами
+std::ifstream config("config.txt");
+std::string line;
+unsigned int move_time;
+std::unordered_map<std::string, std::string> users;
+std::ofstream llog;
 
 //Игровое поле
 char game_map[3][3] = {{' ', ' ', ' '},

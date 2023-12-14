@@ -78,15 +78,20 @@ void getPort(){
 //Авторизация клиента
 bool authorize(SOCKET socket){
     char buffer[1024];
+    if (username != "") {
+        send(socket, username.c_str(), 1024, NULL);
+        send(socket, password.c_str(), 1024, NULL);
+    }
+    else {
+        std::cout << "\033[1m" << "Nickname: \033[0m";
+        std::cin >> buffer;
+        username = buffer;
 
-    std::cout << "\033[1m" << "Nickname: \033[0m";
-    std::cin >> buffer;
-    std::string nickname = buffer;
-
-    send(socket, buffer, 1024, NULL);
-    std::cout << "\033[1m" << "Password: \033[0m";
-    std::cin >> buffer;
-    send(socket, buffer, 1024, NULL);
+        send(socket, buffer, 1024, NULL);
+        std::cout << "\033[1m" << "Password: \033[0m";
+        std::cin >> buffer;
+        send(socket, buffer, 1024, NULL);
+    }
     memset(buffer, 0, sizeof(buffer));
     int valread = recv(socket, buffer, 1024,NULL);
     if (valread <= 0) {
@@ -96,7 +101,7 @@ bool authorize(SOCKET socket){
     }
 
     if (strcmp(buffer, "Success connect!\n") == 0){
-        logWriter(nickname + " successfully connect");
+        logWriter(username + " successfully connect");
         std::cout << "\033[1;32m" << buffer << "\033[0m";
         return true;
     }
@@ -148,11 +153,11 @@ void printGameMap(){
 
 //Обработка сообщений с сервера
 void receiveMessages(SOCKET socket) {
-    int valread = 0;
+    int valread = 0 ;
     char buffer[1024];
     while (true) {
         valread = recv(socket, buffer, 1024, NULL);
-        std::cout << valread << buffer[0] << buffer[1] << std::endl;
+        std::cout << valread << buffer << std::endl;
         if (valread > 0) {
             std::system("clear");
             //Игра закончилась, выводим победителя и выходим из цикла
@@ -317,8 +322,20 @@ int main() {
         exit(1);
     }
     SOCKADDR_IN addr;
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    addr.sin_port = htons(1111);
+    std::getline(config, line);
+    addr.sin_addr.s_addr = inet_addr(line.c_str());
+    std::getline(config, line);
+    addr.sin_port = htons(stoi(line));
+    std::getline(config, line);
+    std::ofstream llog(line); //Файл с логами
+    while (std::getline(config, line)) {
+        size_t pos = line.find(" ");
+        username = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        password = line;
+    }
+    config.close();
+
     addr.sin_family = AF_INET;
     SOCKET Connection = socket(AF_INET, SOCK_STREAM, NULL);
 
@@ -327,7 +344,7 @@ int main() {
         return 1;
     }
 
-    logWriter("Success connect to server");
+    logWriter("Succecss connect to server");
 
     getTimeForMove();
     printHelloMessage();

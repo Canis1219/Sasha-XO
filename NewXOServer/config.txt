@@ -1,3 +1,4 @@
 30000
+log_server.txt
 abc abc
 qwe qwe

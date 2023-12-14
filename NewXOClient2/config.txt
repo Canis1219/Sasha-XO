@@ -1,6 +1,4 @@
-FergeS 123
-Mark 2
-Hasbik Mal
-Admin Admin
-Dimon ITMO
-SPbU OneLove 
+127.0.0.1
+1111
+log_clients.txt
+qwe qwe

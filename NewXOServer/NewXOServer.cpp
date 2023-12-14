@@ -251,20 +251,7 @@ void connectionClients(SOCKET socket, bool &gamer_l){
     recv(socket, username1, sizeof(username1), NULL);
     recv(socket, password1, sizeof(password1), NULL);
 
-    std::ifstream config("config.txt");
-    std::string line;
-    unsigned int move_time;
-    std::unordered_map<std::string, std::string> users;
-    std::getline(config, line);
-    move_time = stoi(line);
-    std::cout << move_time << std::endl;
-    while (std::getline(config, line)) {
-        size_t pos = line.find(" ");
-        std::string username = line.substr(0, pos);
-        line.erase(0, pos + 1);
-        users[username] = line;
-    }
-    config.close();
+    
     auto search1 = users.find(username1);
     if (search1 != users.end() and search1->second == password1) {
         send(socket, "Success connect!\n", sizeof("Success connect!\n"), 0);
@@ -308,6 +295,18 @@ void connectionClients(SOCKET socket, bool &gamer_l){
 }
 
 int main() {
+    std::getline(config, line);
+    move_time = stoi(line);
+    std::getline(config, line);
+    std::ofstream llog(line); //Файл с логами
+    while (std::getline(config, line)) {
+        size_t pos = line.find(" ");
+        std::string username = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        users[username] = line;
+    }
+    config.close();
+    
     clearLogClients();
     WSAData wsaData;
     WORD DLLVersion = MAKEWORD(2, 1);
@@ -347,14 +346,9 @@ int main() {
 
     }
 
-    //for (auto it = clients.begin(); it != clients.end(); ++it) {
-    //    std::thread clientThread(clientHandler, it->first);
-    //    clientThread.detach();
-    //}
-	std::thread FThread(clientHandler, FConnection);
+    std::thread FThread(clientHandler, FConnection);
     std::thread SThread(clientHandler, SConnection);
     FThread.join();
     SThread.join();
-	
     return 0;
 }
